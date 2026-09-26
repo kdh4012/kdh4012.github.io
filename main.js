@@ -64,6 +64,21 @@
   } else hideSection("skills");
 
   // ---------- Experience ----------
+  const bullets = (arr) =>
+    arr?.length ? `<ul class="bullets">${arr.map((a) => `<li>${esc(a)}</li>`).join("")}</ul>` : "";
+
+  // 회사 하위 프로젝트 1건 렌더링 (빈 값은 출력하지 않음)
+  const expProject = (pj) => `
+      <div class="tl-proj">
+        <div class="tl-head">
+          <h4>${esc(pj.title)}${pj.role ? ` <span class="muted">· ${esc(pj.role)}</span>` : ""}</h4>
+          <span class="period">${esc(pj.period)}</span>
+        </div>
+        ${pj.summary ? `<p class="tl-summary">${esc(pj.summary)}</p>` : ""}
+        ${bullets(pj.achievements)}
+        ${pj.stack?.length ? `<div class="tags">${tags(pj.stack)}</div>` : ""}
+      </div>`;
+
   if (d.experience?.length) {
     $("experience-body").innerHTML = d.experience
       .map(
@@ -74,8 +89,9 @@
           <span class="period">${esc(e.period)}</span>
         </div>
         ${e.summary ? `<p class="tl-summary">${esc(e.summary)}</p>` : ""}
-        ${e.achievements?.length ? `<ul class="bullets">${e.achievements.map((a) => `<li>${esc(a)}</li>`).join("")}</ul>` : ""}
+        ${bullets(e.achievements)}
         <div class="tags">${tags(e.stack)}</div>
+        ${e.projects?.length ? `<div class="tl-projects">${e.projects.map(expProject).join("")}</div>` : ""}
       </li>`
       )
       .join("");

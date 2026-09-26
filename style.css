@@ -173,3 +173,28 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
   .card, .tl-item { break-inside: avoid; }
   .card:hover { transform: none; }
 }
+
+.tl-projects {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+.tl-proj {
+  padding: 18px 20px;
+  border: 1px solid rgba(127, 127, 127, 0.22);
+  border-radius: 14px;
+  background: rgba(127, 127, 127, 0.04);
+}
+.tl-proj h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.tl-proj .tl-summary { margin: 6px 0 0; }
+.tl-proj .bullets    { margin: 10px 0 0; }
+.tl-proj .tags       { margin-top: 12px; }
+
+@media (max-width: 640px) {
+  .tl-proj { padding: 14px 16px; }
+}
