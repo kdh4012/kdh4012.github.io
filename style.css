@@ -149,6 +149,9 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 .simple-list li { display: flex; justify-content: space-between; gap: 12px; }
 .simple-list li div { display: flex; flex-direction: column; }
 .simple-list .muted { font-size: 14px; }
+.simple-list .li-side { flex-direction: row; align-items: center; gap: 10px; flex: none; }
+.icon-btn-sm { width: 30px; height: 30px; }
+.icon-btn-sm svg { width: 15px; height: 15px; }
 
 .footer { text-align: center; color: var(--muted); font-size: 13px; padding: 48px 20px; border-top: 1px solid var(--border); }
 
@@ -167,7 +170,7 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 /* ---------- Print (브라우저 인쇄 → PDF 이력서) ---------- */
 @media print {
   :root { --bg: #fff; --surface: #fff; --text: #000; --muted: #555; --border: #ddd; --accent: #1d4ed8; --tag-bg: #fff; }
-  .nav, .theme-btn, .footer { display: none; }
+  .nav, .theme-btn, .footer, .icon-btn-sm { display: none; }
   .hero { padding-top: 0; }
   .section { padding: 24px 0; break-inside: avoid-page; }
   .card, .tl-item { break-inside: avoid; }

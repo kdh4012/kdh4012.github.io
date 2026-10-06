@@ -24,6 +24,7 @@
     instagram: '<rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>',
     blog: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
     linkedin: '<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/>',
+    download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>',
     resume: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 13H8"/><path d="M16 17H8"/><path d="M16 13h-2"/>',
   };
   const icon = (name) =>
@@ -132,9 +133,14 @@
   } else hideSection("projects");
 
   // ---------- Education / Certificates ----------
+  // file 이 있으면 기간 옆에 PDF 다운로드 버튼 표시
+  const fileBtn = (i) =>
+    i.file
+      ? `<a class="icon-btn icon-btn-sm" href="${esc(i.file)}" download title="${esc(i.title)} PDF 다운로드" aria-label="${esc(i.title)} PDF 다운로드">${icon("download")}</a>`
+      : "";
   const simpleList = (arr) =>
     arr
-      .map((i) => `<li><div><strong>${esc(i.title)}</strong><span class="muted">${esc(i.sub)}</span></div><span class="period">${esc(i.period)}</span></li>`)
+      .map((i) => `<li><div><strong>${esc(i.title)}</strong><span class="muted">${esc(i.sub)}</span></div><div class="li-side"><span class="period">${esc(i.period)}</span>${fileBtn(i)}</div></li>`)
       .join("");
   const edu = d.education || [], cert = d.certificates || [];
   if (edu.length || cert.length) {
