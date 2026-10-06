@@ -15,6 +15,19 @@ GitHub Pages용 정적 포트폴리오. 빌드 도구 없이 HTML/CSS/JS만 사�
 - 프로필 사진·이력서 PDF는 `assets/` 폴더에 넣고 `data.js`에 경로를 적는다.
 - 브라우저 인쇄(Ctrl+P) → PDF 저장 시 인쇄 전용 레이아웃이 적용된다.
 
+## 자격증 PDF (비밀번호 다운로드)
+
+원본 PDF는 커밋하지 않고, 암호화한 `assets/certificates/*.pdf.enc`만 올린다.
+다운로드 버튼 → 비밀번호 입력 → 브라우저에서 복호화되어 원본과 동일한 PDF가 저장된다.
+
+```bash
+# 원본 PDF 폴더(저장소 밖)를 지정해 암호화. 비밀번호는 프롬프트로 입력
+node tools/encrypt-certs.mjs ~/certs
+```
+
+- 파일명 `<이름>.pdf` → `assets/certificates/<이름>.pdf.enc`, `data.js`의 `certificates[].file`에 경로 지정
+- 비밀번호 변경 시 전체 파일을 같은 비밀번호로 다시 암호화
+
 ## 배포
 
 1. GitHub에 `<아이디>.github.io` 저장소 생성
