@@ -75,6 +75,20 @@
 
   <footer class="footer" id="footer"></footer>
 
+  <!-- 자격증 PDF 다운로드 비밀번호 입력 -->
+  <dialog class="cert-dialog" id="cert-dialog">
+    <form id="cert-form" method="dialog">
+      <h3>자격증 사본 다운로드</h3>
+      <p class="muted">비밀번호를 입력하면 다운로드됩니다.</p>
+      <input type="password" id="cert-password" autocomplete="off" required aria-label="비밀번호" />
+      <p class="cert-msg" id="cert-msg" role="status"></p>
+      <div class="cert-actions">
+        <button type="submit" value="cancel" formnovalidate class="btn">취소</button>
+        <button type="submit" value="ok" class="btn btn-primary">다운로드</button>
+      </div>
+    </form>
+  </dialog>
+
   <script src="data.js"></script>
   <script src="main.js"></script>
   <!-- 경력기술서 TODO 패널 (제출 전 이 줄과 todo.js 삭제) -->

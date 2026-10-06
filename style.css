@@ -149,6 +149,33 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 .simple-list li { display: flex; justify-content: space-between; gap: 12px; }
 .simple-list li div { display: flex; flex-direction: column; }
 .simple-list .muted { font-size: 14px; }
+.simple-list .li-side { flex-direction: row; align-items: center; gap: 10px; flex: none; }
+.icon-btn-sm { width: 30px; height: 30px; }
+.icon-btn-sm svg { width: 15px; height: 15px; }
+button.icon-btn { cursor: pointer; padding: 0; font: inherit; }
+
+/* ---------- 자격증 다운로드 비밀번호 다이얼로그 ---------- */
+.cert-dialog {
+  margin: auto; width: min(360px, calc(100% - 32px));
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: var(--radius); padding: 24px;
+}
+.cert-dialog::backdrop { background: rgba(0, 0, 0, .45); }
+.cert-dialog h3 { font-size: 17px; margin-bottom: 4px; }
+.cert-dialog .muted { font-size: 14px; margin-bottom: 14px; }
+.cert-dialog input {
+  width: 100%; padding: 10px 12px; font: inherit; color: var(--text);
+  background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+}
+.cert-dialog input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.cert-msg { min-height: 20px; margin-top: 8px; font-size: 13px; color: #dc2626; }
+.cert-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }
+.btn {
+  padding: 8px 16px; font: inherit; font-size: 14px; cursor: pointer;
+  border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text);
+}
+.btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn:disabled { opacity: .6; cursor: wait; }
 
 .footer { text-align: center; color: var(--muted); font-size: 13px; padding: 48px 20px; border-top: 1px solid var(--border); }
 
@@ -167,7 +194,7 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 /* ---------- Print (브라우저 인쇄 → PDF 이력서) ---------- */
 @media print {
   :root { --bg: #fff; --surface: #fff; --text: #000; --muted: #555; --border: #ddd; --accent: #1d4ed8; --tag-bg: #fff; }
-  .nav, .theme-btn, .footer { display: none; }
+  .nav, .theme-btn, .footer, .icon-btn-sm { display: none; }
   .hero { padding-top: 0; }
   .section { padding: 24px 0; break-inside: avoid-page; }
   .card, .tl-item { break-inside: avoid; }

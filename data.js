@@ -152,12 +152,13 @@ const PORTFOLIO = {
     { title: "상명대학교 컴퓨터과학과", sub: "학사 졸업", period: "2013.03 – 2020.02" },
   ],
 
+  // file: 암호화된 자격증 PDF 경로 (tools/encrypt-certs.mjs 로 생성, 비우면 다운로드 버튼 숨김)
   certificates: [
     { title: "AWS Certified Solutions Architect – Associate", sub: "Amazon Web Services", period: "2025.01.11 – 2028.01.11" },
-    { title: "SQLD", sub: "한국데이터산업진흥원", period: "2021.06.25" },
-    { title: "Coding Specialist Professional 1급", sub: "YBM IT", period: "2020.08.23" },
-    { title: "한국사능력검정시험 1급", sub: "국사편찬위원회", period: "2018.05.26" },
-    { title: "정보처리기사", sub: "한국산업인력공단", period: "2018.05.25" },
-    { title: "컴퓨터활용능력 1급", sub: "대한상공회의소", period: "2018.05.25" },
+    { title: "SQLD", sub: "한국데이터산업진흥원", period: "2021.06.25", file: "assets/certificates/sqld.pdf.enc" },
+    { title: "Coding Specialist Professional 1급", sub: "YBM IT", period: "2020.08.23", file: "assets/certificates/cos-pro-java-1.pdf.enc" },
+    { title: "한국사능력검정시험 1급", sub: "국사편찬위원회", period: "2018.05.26", file: "assets/certificates/korean-history-1.pdf.enc" },
+    { title: "정보처리기사", sub: "한국산업인력공단", period: "2018.05.25", file: "assets/certificates/engineer-information-processing.pdf.enc" },
+    { title: "컴퓨터활용능력 1급", sub: "대한상공회의소", period: "2018.05.25", file: "assets/certificates/computer-specialist-1.pdf.enc" },
   ],
 };

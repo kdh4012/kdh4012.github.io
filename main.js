@@ -24,6 +24,7 @@
     instagram: '<rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>',
     blog: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
     linkedin: '<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/>',
+    download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>',
     resume: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 13H8"/><path d="M16 17H8"/><path d="M16 13h-2"/>',
   };
   const icon = (name) =>
@@ -132,9 +133,15 @@
   } else hideSection("projects");
 
   // ---------- Education / Certificates ----------
+  // file 이 있으면 기간 옆에 PDF 다운로드 버튼 표시 (암호화 파일 → 클릭 시 비밀번호 확인)
+  // 저장 파일명은 한글 제목 대신 ASCII 파일명 사용 (일부 브라우저가 한글 이름을 "download"로 바꿈)
+  const fileBtn = (i) =>
+    i.file
+      ? `<button type="button" class="icon-btn icon-btn-sm" data-file="${esc(i.file)}" data-name="${esc(i.file.split("/").pop().replace(/\.enc$/, ""))}" title="${esc(i.title)} PDF 다운로드" aria-label="${esc(i.title)} PDF 다운로드">${icon("download")}</button>`
+      : "";
   const simpleList = (arr) =>
     arr
-      .map((i) => `<li><div><strong>${esc(i.title)}</strong><span class="muted">${esc(i.sub)}</span></div><span class="period">${esc(i.period)}</span></li>`)
+      .map((i) => `<li><div><strong>${esc(i.title)}</strong><span class="muted">${esc(i.sub)}</span></div><div class="li-side"><span class="period">${esc(i.period)}</span>${fileBtn(i)}</div></li>`)
       .join("");
   const edu = d.education || [], cert = d.certificates || [];
   if (edu.length || cert.length) {
@@ -143,6 +150,88 @@
     if (!edu.length) $("education-body").parentElement.hidden = true;
     if (!cert.length) $("certificates-body").parentElement.hidden = true;
   } else hideSection("education");
+
+  // ---------- Certificate download (암호화 PDF 복호화) ----------
+  // 포맷: [ "CERT1"(5B) | salt(16B) | iv(12B) | AES-256-GCM 암호문+tag ]  — tools/encrypt-certs.mjs 와 동일
+  const CERT_MAGIC = "CERT1";
+  const CERT_ITERATIONS = 600000;
+  let certPassword = null; // 한 번 맞히면 페이지를 떠날 때까지 재입력 생략 (메모리에만 보관)
+
+  async function decryptCert(buf, password) {
+    const bytes = new Uint8Array(buf);
+    const m = CERT_MAGIC.length;
+    if (new TextDecoder().decode(bytes.subarray(0, m)) !== CERT_MAGIC) throw new Error("format");
+    const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
+    const key = await crypto.subtle.deriveKey(
+      { name: "PBKDF2", hash: "SHA-256", salt: bytes.subarray(m, m + 16), iterations: CERT_ITERATIONS },
+      base,
+      { name: "AES-GCM", length: 256 },
+      false,
+      ["decrypt"]
+    );
+    // 비밀번호가 틀리면 GCM 인증 태그 검증에서 예외 발생
+    return crypto.subtle.decrypt({ name: "AES-GCM", iv: bytes.subarray(m + 16, m + 28) }, key, bytes.subarray(m + 28));
+  }
+
+  function saveBlob(data, name) {
+    const url = URL.createObjectURL(new Blob([data], { type: "application/pdf" }));
+    const a = Object.assign(document.createElement("a"), { href: url, download: name });
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  // 받은 암호문을 비밀번호로 풀어 저장. 실패 시 false
+  async function tryDownload(file, name, password) {
+    const res = await fetch(file);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const buf = await res.arrayBuffer();
+    try {
+      saveBlob(await decryptCert(buf, password), name);
+      return true;
+    } catch (e) {
+      if (e.message === "format") throw e;
+      return false;
+    }
+  }
+
+  const dlg = $("cert-dialog"), dlgForm = $("cert-form"), dlgInput = $("cert-password"), dlgMsg = $("cert-msg");
+  let pending = null; // 다이얼로그가 열린 대상 { file, name }
+
+  $("certificates-body").addEventListener("click", async (ev) => {
+    const btn = ev.target.closest("button[data-file]");
+    if (!btn) return;
+    const target = { file: btn.dataset.file, name: btn.dataset.name };
+    // 이미 확인된 비밀번호가 있으면 바로 다운로드
+    if (certPassword && (await tryDownload(target.file, target.name, certPassword).catch(() => false))) return;
+    pending = target;
+    dlgMsg.textContent = "";
+    dlgInput.value = "";
+    dlg.showModal();
+    dlgInput.focus();
+  });
+
+  dlgForm.addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    if (ev.submitter?.value === "cancel") return dlg.close();
+    const submitBtn = dlgForm.querySelector('button[value="ok"]');
+    submitBtn.disabled = true;
+    dlgMsg.textContent = "확인 중…";
+    try {
+      if (await tryDownload(pending.file, pending.name, dlgInput.value)) {
+        certPassword = dlgInput.value;
+        dlg.close();
+      } else {
+        dlgMsg.textContent = "비밀번호가 올바르지 않습니다.";
+        dlgInput.select();
+      }
+    } catch (e) {
+      dlgMsg.textContent = "파일을 불러오지 못했습니다.";
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
 
   // ---------- Footer ----------
   $("footer").textContent = `© ${new Date().getFullYear()} ${p.nameEn || p.name}`;
