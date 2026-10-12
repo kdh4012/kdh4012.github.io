@@ -21,6 +21,8 @@ const PORTFOLIO = {
   highlights: [
     { value: "6+", label: "Years of Experience" },
     { value: "6", label: "Certificates" },
+    { value: "329", label: "Dealer Branches" },
+    { value: "2,400+", label: "System Users" },
   ],
 
   about: [
@@ -46,7 +48,7 @@ const PORTFOLIO = {
       summary: "2020.09 인턴 입사 → 2020.12 정규직 전환 · 수입차 딜러 관리 시스템(DMS) 구축 및 운영",
       achievements: [
         "고객 등록부터 계약·수납·매출·인도까지 차량 판매(Sales) 전 과정의 백엔드와 화면 개발",
-        "BMW/MINI, 폭스바겐/아우디, 재규어·랜드로버 딜러사 대상 DMS(WDMS) 구축 및 운영",
+        "BMW/MINI, 폭스바겐/아우디, 재규어·랜드로버 딜러사 대상 DMS(WDMS) 구축 및 운영 (BMW/MINI·폭스바겐/아우디 기준 20개 딜러사 · 329개 지점 · 사용자 2,423명)",
         "KCP PG, 본인인증, 국세청 API, 회계 시스템(SBO·더존 아마란스), 정산 시스템(CSM) 연동 개발",
       ],
       stack: ["Java", "Spring", "MyBatis", "Oracle", "Tibero", "JSP", "jQuery", "Kendo UI"],
@@ -81,7 +83,7 @@ const PORTFOLIO = {
           title: "WDMS 구축 · 폭스바겐/아우디",
           role: "Sales 핵심 모듈 메인 담당",
           period: "2024.01 – 2024.12",
-          summary: "폭스바겐·아우디 브랜드별 5~7개 딜러사 대상 DMS 구축",
+          summary: "아우디 8개·폭스바겐 5개 딜러사 · 135개 지점(아우디 77, 폭스바겐 58) · 사용자 632명(SC 447 · 영업팀장 107 · 재고담당 78) 대상 DMS 구축",
           achievements: [
             "고객 → 구매신청서 → 품의 작성/승인 → 매매계약서 → 매출확정 → 인도완료로 이어지는 Sales 프로세스 중 고객·계약/품의·수납·프로모션 메인 담당",
             "매출확정·세금계산서·제작증 발행, 차량등록 및 하자고지·인수 서명(인도완료) 기능 개발",
@@ -108,7 +110,7 @@ const PORTFOLIO = {
           title: "WDMS 구축 · BMW/MINI",
           role: "프로모션·수납 담당",
           period: "2022.01 – 2022.10",
-          summary: "BMW/MINI 공식 딜러 7개 그룹(코오롱, 한독, 도이치, 바바리안, 삼천리, 내셔널, 동성) 대상 DMS 구축 · 2022.10 오픈",
+          summary: "BMW/MINI 공식 딜러 7개 그룹(코오롱, 한독, 도이치, 바바리안, 삼천리, 내셔널, 동성) · 194개 지점(BMW 163, MINI 31) · 사용자 1,791명(SC 1,422 · 영업팀장 264 · 재고담당 105) 대상 DMS 구축 · 2022.10 오픈",
           achievements: [
             "KR 프로모션: 법인판매(협약 법인 그룹별 차등 할인)·특별판매(재구매·가족 구매 이력 기반 할인) 등록 → 승인 워크플로우 개발",
             "최종 승인된 프로모션을 CSM 정산 시스템으로 I/F",
