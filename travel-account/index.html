@@ -13,7 +13,7 @@
     --text-strong: #191f28;
     --text-date: #4e5968;
     --text-sub: #8b95a1;
-    --blue: #3182f6;
+    --blue: #0d84d4;
     --tag: #1b64da;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,17 +43,17 @@
     background: none; border: 0; cursor: pointer;
   }
 
-  /* 샘플 데이터 표시: 헤더 아래 고정 배너 + 목록 전체 워터마크 (실제 거래내역으로 오인 방지) */
-  .sample-banner {
+  /* 샘플 데이터 표시: 헤더 아래 고정 배너 (실제 거래내역으로 오인 방지) */
+  .sample-wrap {
     position: sticky; top: calc(56px + env(safe-area-inset-top)); z-index: 9;
-    margin: 0 16px; padding: 8px 12px; border-radius: 8px;
+    padding: 0 16px 8px; background: var(--bg);
+  }
+  .sample-banner {
+    padding: 8px 12px; border-radius: 8px;
     background: #fff4e5; color: #c25b00;
     font-size: 13px; font-weight: 600; text-align: center;
   }
-  .list {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='160'%3E%3Ctext x='110' y='85' text-anchor='middle' transform='rotate(-25 110 80)' font-family='sans-serif' font-size='26' font-weight='700' fill='%23000' fill-opacity='0.06'%3E샘플 데이터%3C/text%3E%3C/svg%3E");
-  }
-  .list { padding: 46px 20px 40px; }
+  .list { padding: 38px 20px 96px; }
   .group + .group { margin-top: 32px; }
   .date { font-size: 16px; font-weight: 700; color: var(--text-date); margin-bottom: 12px; }
 
@@ -68,6 +68,18 @@
   .amount { font-size: 19px; font-weight: 700; line-height: 24px; color: var(--text-strong); }
   .amount.in { color: var(--blue); }
   .balance { font-size: 16px; color: var(--text-sub); line-height: 20px; }
+
+  /* 맨 위로 플로팅 버튼: 일정 이상 스크롤했을 때만 노출 */
+  .to-top {
+    position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom));
+    transform: translate(-50%, 16px); opacity: 0; pointer-events: none;
+    display: flex; align-items: center; gap: 6px;
+    padding: 12px 18px; border: 0; border-radius: 999px;
+    background: #fff; color: #191f28; font: inherit; font-size: 15px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+    transition: opacity .2s, transform .2s; cursor: pointer;
+  }
+  .to-top.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
 </style>
 </head>
 <body>
@@ -80,8 +92,14 @@
     </button>
     <h1>이인극의 통장</h1>
   </header>
-  <div class="sample-banner">샘플 데이터 · 실제 거래내역이 아닙니다</div>
+  <div class="sample-wrap"><div class="sample-banner">샘플 데이터 · 실제 거래내역이 아닙니다</div></div>
   <main class="list" id="list"></main>
+  <button class="to-top" id="toTop" type="button">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+      <path d="M12 21V3M4 11l8-8 8 8" stroke="#191f28" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    맨 위로
+  </button>
 </div>
 
 <script>
@@ -201,6 +219,13 @@
           </div>
         </div>`).join('')}
     </section>`).join('');
+
+  // 맨 위로 버튼 노출/동작
+  const toTop = document.getElementById('toTop');
+  const onScroll = () => toTop.classList.toggle('show', window.scrollY > 300);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  onScroll();
 </script>
 </body>
 </html>
