@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>동쫑 여행 통장</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --text-strong: #191f28;
+    --text-date: #4e5968;
+    --text-sub: #8b95a1;
+    --blue: #3182f6;
+    --tag: #1b64da;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
+    color: var(--text-strong);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: -0.2px;
+  }
+  .app { max-width: 480px; margin: 0 auto; min-height: 100vh; background: var(--bg); }
+
+  /* 상단 헤더: 뒤로가기 + 가운데 제목 */
+  .header {
+    position: sticky; top: 0; z-index: 10;
+    height: 56px; padding-top: env(safe-area-inset-top);
+    box-sizing: content-box;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg);
+  }
+  .header h1 { font-size: 18px; font-weight: 700; color: #333d4b; }
+  .back {
+    position: absolute; left: 16px; bottom: 8px;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: none; border: 0; cursor: pointer;
+  }
+
+  .list { padding: 46px 20px 40px; }
+  .group + .group { margin-top: 32px; }
+  .date { font-size: 16px; font-weight: 700; color: var(--text-date); margin-bottom: 12px; }
+
+  .row { display: flex; justify-content: space-between; align-items: flex-start; }
+  .left, .right { display: flex; flex-direction: column; gap: 6px; }
+  .right { align-items: flex-end; text-align: right; }
+
+  .name   { font-size: 18px; font-weight: 400; color: var(--text-strong); line-height: 24px; }
+  .meta   { font-size: 15px; color: var(--text-sub); line-height: 20px; display: flex; gap: 8px; }
+  .meta .tag { color: var(--tag); }
+  .amount { font-size: 19px; font-weight: 700; line-height: 24px; color: var(--text-strong); }
+  .amount.in { color: var(--blue); }
+  .balance { font-size: 16px; color: var(--text-sub); line-height: 20px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <button class="back" type="button" aria-label="뒤로가기" onclick="history.back()">
+      <svg width="14" height="24" viewBox="0 0 14 24" fill="none">
+        <path d="M12 2L2 12l10 10" stroke="#191f28" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <h1>동쫑 여행 통장</h1>
+  </header>
+  <main class="list" id="list"></main>
+</div>
+
+<script>
+  // 거래내역 데이터 (최신순). amount: 입금(+) / 출금(-), balance: 거래 후 잔액
+  const transactions = [
+    { date: '10.11', time: '11:42', name: '김동현',        amount:    5000, balance: 252304 },
+    { date: '10.09', time: '10:16', name: '김태현',        amount:   -5000, balance: 247304 },
+    { date: '09.26', time: '05:48', name: '입출금통장 이자', amount:      16, balance: 252304, tag: '예금이자' },
+    { date: '09.17', time: '19:47', name: '김동현',        amount:  200000, balance: 252288 },
+    { date: '09.16', time: '16:12', name: '김동현',        amount: -200000, balance:  52288 },
+    { date: '09.14', time: '15:23', name: '김동현',        amount: -147720, balance: 252288 },
+  ];
+
+  const won = n => n.toLocaleString('ko-KR') + '원';
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+
+  // 같은 날짜끼리 묶어서 날짜 헤더는 한 번만 출력
+  const groups = transactions.reduce((acc, t) => {
+    const last = acc[acc.length - 1];
+    if (last && last.date === t.date) last.items.push(t);
+    else acc.push({ date: t.date, items: [t] });
+    return acc;
+  }, []);
+
+  document.getElementById('list').innerHTML = groups.map(g => `
+    <section class="group">
+      <div class="date">${esc(g.date)}</div>
+      ${g.items.map(t => `
+        <div class="row">
+          <div class="left">
+            <span class="name">${esc(t.name)}</span>
+            <span class="meta">${esc(t.time)}${t.tag ? `<span class="tag">#${esc(t.tag)}</span>` : ''}</span>
+          </div>
+          <div class="right">
+            <span class="amount ${t.amount > 0 ? 'in' : ''}">${t.amount < 0 ? '-' : ''}${won(Math.abs(t.amount))}</span>
+            <span class="balance">${won(t.balance)}</span>
+          </div>
+        </div>`).join('')}
+    </section>`).join('');
+</script>
+</body>
+</html>
