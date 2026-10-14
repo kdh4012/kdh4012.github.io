@@ -43,15 +43,12 @@
     background: none; border: 0; cursor: pointer;
   }
 
-  /* 샘플 데이터 표시: 헤더 아래 고정 배너 (실제 거래내역으로 오인 방지) */
-  .sample-wrap {
-    position: sticky; top: calc(56px + env(safe-area-inset-top)); z-index: 9;
-    padding: 0 16px 8px; background: var(--bg);
-  }
-  .sample-banner {
-    padding: 8px 12px; border-radius: 8px;
-    background: #fff4e5; color: #c25b00;
-    font-size: 13px; font-weight: 600; text-align: center;
+  /* 샘플 데이터 표시: 하단 고정 한 줄 (실제 거래내역으로 오인 방지) */
+  .sample-note {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 9;
+    padding: 6px 0 calc(6px + env(safe-area-inset-bottom));
+    background: var(--bg);
+    font-size: 12px; color: var(--text-sub); text-align: center;
   }
   .list { padding: 38px 20px 96px; }
   .group + .group { margin-top: 32px; }
@@ -71,7 +68,7 @@
 
   /* 맨 위로 플로팅 버튼: 일정 이상 스크롤했을 때만 노출 */
   .to-top {
-    position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom));
+    position: fixed; left: 50%; bottom: calc(40px + env(safe-area-inset-bottom));
     transform: translate(-50%, 16px); opacity: 0; pointer-events: none;
     display: flex; align-items: center; gap: 6px;
     padding: 12px 18px; border: 0; border-radius: 999px;
@@ -93,6 +90,7 @@
     <h1>이인극의 통장</h1>
   </header>
   <main class="list" id="list"></main>
+  <div class="sample-note">샘플 데이터</div>
   <button class="to-top" id="toTop" type="button">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
       <path d="M12 21V3M4 11l8-8 8 8" stroke="#191f28" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -109,14 +107,14 @@
     { date: '10.13', time: '20:48', name: '이인극', amount: 4000000, balance: 4000000 },
     { date: '10.13', time: '16:32', name: '박재형', amount: -3000000, balance: 0 },
     { date: '10.13', time: '16:30', name: '이인극', amount: 3000000, balance: 3000000 },
-    { date: '10.13', time: '04:35', name: '유태호', amount: -610000, balance: 0 },
-    { date: '10.13', time: '04:34', name: '유태호', amount: -2000000, balance: 610000 },
+    { date: '10.13', time: '04:35', name: '김동현', amount: -610000, balance: 0 },
+    { date: '10.13', time: '04:34', name: '김동현', amount: -2000000, balance: 610000 },
     { date: '10.13', time: '04:15', name: '이인극', amount: -100000, balance: 2610000 },
     { date: '10.13', time: '04:11', name: '박재형', amount: -60000, balance: 2710000 },
     { date: '10.13', time: '01:36', name: '이인극', amount: 2770000, balance: 2770000 },
     { date: '10.12', time: '23:49', name: '이인극', amount: -100000, balance: 0 },
-    { date: '10.12', time: '22:29', name: '유태호', amount: -2400000, balance: 100000 },
-    { date: '10.12', time: '22:28', name: '유태호', amount: -2500000, balance: 2500000 },
+    { date: '10.12', time: '22:29', name: '김동현', amount: -2400000, balance: 100000 },
+    { date: '10.12', time: '22:28', name: '김동현', amount: -2500000, balance: 2500000 },
     { date: '10.12', time: '22:26', name: '이인극', amount: 1000000, balance: 5000000 },
     { date: '10.12', time: '22:26', name: '이인극', amount: 4000000, balance: 4000000 },
     { date: '10.12', time: '11:44', name: '박재형', amount: -2000000, balance: 0 },
@@ -131,9 +129,9 @@
     { date: '10.11', time: '09:31', name: '이인극', amount: -2000000, balance: 0 },
     { date: '10.11', time: '09:28', name: '이인극', amount: 2000000, balance: 2000000 },
     { date: '10.11', time: '00:49', name: '이인극', amount: -150000, balance: 0 },
-    { date: '10.11', time: '00:48', name: '유태호', amount: -2500000, balance: 150000 },
+    { date: '10.11', time: '00:48', name: '김동현', amount: -2500000, balance: 150000 },
     { date: '10.11', time: '00:40', name: '이인극', amount: 2650000, balance: 2650000 },
-    { date: '10.10', time: '21:23', name: '유태호', amount: -5000000, balance: 0 },
+    { date: '10.10', time: '21:23', name: '김동현', amount: -5000000, balance: 0 },
     { date: '10.10', time: '20:49', name: '이인극', amount: 5000000, balance: 5000000 },
     { date: '10.09', time: '21:36', name: '박재형', amount: -1000000, balance: 0 },
     { date: '10.09', time: '21:36', name: '박재형', amount: -3000000, balance: 1000000 },
@@ -150,11 +148,11 @@
     { date: '10.09', time: '10:49', name: '이인극', amount: -2000000, balance: 0 },
     { date: '10.09', time: '10:49', name: '이인극', amount: 2000000, balance: 2000000 },
     { date: '10.08', time: '15:29', name: '이인극', amount: -70000, balance: 0 },
-    { date: '10.08', time: '15:29', name: '유태호', amount: -3400000, balance: 70000 },
+    { date: '10.08', time: '15:29', name: '김동현', amount: -3400000, balance: 70000 },
     { date: '10.08', time: '15:17', name: '이인극', amount: 3470000, balance: 3470000 },
     { date: '10.08', time: '13:07', name: '이인극', amount: -90000, balance: 0 },
-    { date: '10.08', time: '13:07', name: '유태호', amount: -2170000, balance: 90000 },
-    { date: '10.08', time: '13:07', name: '유태호', amount: -2000000, balance: 2260000 },
+    { date: '10.08', time: '13:07', name: '김동현', amount: -2170000, balance: 90000 },
+    { date: '10.08', time: '13:07', name: '김동현', amount: -2000000, balance: 2260000 },
     { date: '10.08', time: '12:25', name: '이인극', amount: 4260000, balance: 4260000 },
     { date: '10.08', time: '06:52', name: '박재형', amount: -300000, balance: 0 },
     { date: '10.08', time: '06:51', name: '박재형', amount: -3000000, balance: 300000 },
@@ -162,14 +160,14 @@
     { date: '10.08', time: '06:44', name: '이인극', amount: -2000000, balance: 0 },
     { date: '10.08', time: '06:43', name: '이인극', amount: 2000000, balance: 2000000 },
     { date: '10.07', time: '22:11', name: '이인극', amount: -70000, balance: 0 },
-    { date: '10.07', time: '22:08', name: '유태호', amount: -3520000, balance: 70000 },
+    { date: '10.07', time: '22:08', name: '김동현', amount: -3520000, balance: 70000 },
     { date: '10.07', time: '22:05', name: '이인극', amount: 3590000, balance: 3590000 },
     { date: '10.07', time: '18:13', name: '이인극', amount: -2000000, balance: 0 },
     { date: '10.07', time: '18:12', name: '이인극', amount: 2000000, balance: 2000000 },
     { date: '10.07', time: '16:35', name: '박재형', amount: -3000000, balance: 0 },
     { date: '10.07', time: '16:34', name: '이인극', amount: 3000000, balance: 3000000 },
     { date: '10.07', time: '13:12', name: '이인극', amount: -80000, balance: 0 },
-    { date: '10.07', time: '12:12', name: '유태호', amount: -3850000, balance: 80000 },
+    { date: '10.07', time: '12:12', name: '김동현', amount: -3850000, balance: 80000 },
     { date: '10.07', time: '10:27', name: '이인극', amount: 3930000, balance: 3930000 },
     { date: '10.07', time: '00:54', name: '박재형', amount: -3000000, balance: 0 },
     { date: '10.07', time: '00:51', name: '이인극', amount: 3000000, balance: 3000000 },
@@ -186,10 +184,10 @@
     { date: '09.28', time: '12:08', name: '이인극', amount: -2000000, balance: 0 },
     { date: '09.28', time: '12:07', name: '이인극', amount: 2000000, balance: 2000000 },
     { date: '09.28', time: '12:06', name: '이인극', amount: -40000, balance: 0 },
-    { date: '09.28', time: '12:05', name: '유태호', amount: -2020000, balance: 40000 },
+    { date: '09.28', time: '12:05', name: '김동현', amount: -2020000, balance: 40000 },
     { date: '09.28', time: '10:59', name: '이인극', amount: 2060000, balance: 2060000 },
     { date: '09.28', time: '07:05', name: '김민석', amount: -100000, balance: 0 },
-    { date: '09.28', time: '07:04', name: '유태호', amount: -2900000, balance: 100000 },
+    { date: '09.28', time: '07:04', name: '김동현', amount: -2900000, balance: 100000 },
   ];
 
   const won = n => n.toLocaleString('ko-KR') + '원';
