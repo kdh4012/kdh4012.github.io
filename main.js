@@ -132,6 +132,33 @@
       .join("");
   } else hideSection("projects");
 
+  // ---------- Troubleshooting ----------
+  // Solution 은 본문 + 선택적 bullet 목록을 함께 표시
+  const tsRow = (label, v, list) =>
+    v || list?.length
+      ? `<div class="pr-row"><dt>${label}</dt><dd>${esc(v)}${list?.length ? bullets(list) : ""}</dd></div>`
+      : "";
+
+  if (d.troubleshooting?.length) {
+    $("troubleshooting-body").innerHTML = d.troubleshooting
+      .map(
+        (t) => `
+      <article class="card">
+        <div class="card-head"><h3>${esc(t.title)}</h3></div>
+        <p class="muted card-meta">${[t.context, t.role].filter(Boolean).map(esc).join(" · ")}</p>
+        <dl class="pr">
+          ${tsRow("Problem", t.problem)}
+          ${tsRow("Cause", t.cause)}
+          ${tsRow("Solution", t.solution, t.solutionList)}
+          ${tsRow("Result", t.result)}
+        </dl>
+        ${t.insight ? `<p class="ts-insight">${esc(t.insight)}</p>` : ""}
+        <div class="tags">${tags(t.tags)}</div>
+      </article>`
+      )
+      .join("");
+  } else hideSection("troubleshooting");
+
   // ---------- Education / Certificates ----------
   // file 이 있으면 기간 옆에 PDF 다운로드 버튼 표시 (암호화 파일 → 클릭 시 비밀번호 확인)
   // 저장 파일명은 한글 제목 대신 ASCII 파일명 사용 (일부 브라우저가 한글 이름을 "download"로 바꿈)

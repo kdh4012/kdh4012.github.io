@@ -142,6 +142,12 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 .card-links:empty { display: none; }
 .card-links a { color: var(--accent); }
 .card-links a:hover { text-decoration: underline; }
+.pr dd .bullets { margin: 6px 0 0; }
+/* 문제 해결 사례의 배운 점 */
+.ts-insight {
+  margin: 0 0 16px; padding: 10px 14px; font-size: 14px;
+  background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 6px;
+}
 
 /* ---------- Education ---------- */
 .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
