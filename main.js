@@ -144,7 +144,7 @@
       .map(
         (t) => `
       <article class="card">
-        <div class="card-head"><h3>${esc(t.title)}</h3></div>
+        <div class="card-head"><h3>${esc(t.title)}</h3>${t.period ? `<span class="period">${esc(t.period)}</span>` : ""}</div>
         <p class="muted card-meta">${[t.context, t.role].filter(Boolean).map(esc).join(" · ")}</p>
         <dl class="pr">
           ${tsRow("Problem", t.problem)}
