@@ -8,7 +8,6 @@ const PORTFOLIO_TODO = [
   {
     group: "A. 정량 수치 (대략값도 OK) — 최우선",
     items: [
-      "배치 처리 건수 (아마란스 I/F 일 평균)",
       "카카오 알림톡 월 발송 건수, 알림톡 vs SMS Fallback 비율",
       "알림톡 전환 비용 절감 (SMS 단가 vs 알림톡 단가 × 월 건수)",
     ],
