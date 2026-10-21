@@ -33,7 +33,6 @@ const PORTFOLIO_TODO = [
     group: "D. 문제 해결 사례 (상황 → 원인 → 해결 → 결과)",
     items: [
       "KCP Webhook 통보 순서 역전 처리 — 회계 I/F 쪽 처리 방식 확인 후 Webhook 사례에 추가",
-      "배치 이슈 — 실패·재처리·회계 불일치",
     ],
   },
 ];
