@@ -23,6 +23,7 @@ const PORTFOLIO_TODO = [
   {
     group: "C. 사실 확인",
     items: [
+      "고객이 휴대폰이 없는 경우 처리 방식 (등록·본인인증 대안)",
       "BMW 딜러 프로모션 — KR 프로모션과 차이",
       "롯데오토케어 — Tibero 전환 때 수정한 쿼리/함수 유형, 순회정비 기능 단위",
       "배치 기술 (Spring Batch / Quartz / @Scheduled / 기타)",
