@@ -19,7 +19,7 @@ const PORTFOLIO = {
   },
 
   highlights: [
-    { value: "6+", label: "Years of Experience" },
+    { value: "6", label: "Years of Experience" },
     { value: "6", label: "Certificates" },
     { value: "329", label: "Dealer Branches" },
     { value: "2,400+", label: "System Users" },
@@ -86,8 +86,8 @@ const PORTFOLIO = {
     {
       company: "(주)웅진",
       role: "Web Developer",
-      period: "2020.09 – 현재",
-      summary: "2020.09 인턴 입사 → 2020.12 정규직 전환 · 수입차 딜러 관리 시스템(DMS) 구축 및 운영",
+      period: "2020.12 – 현재", // 정규직 기준 (2020.09~12 인턴 기간은 경력에서 제외)
+      summary: "수입차 딜러 관리 시스템(DMS) 구축 및 운영",
       achievements: [
         "고객 등록부터 계약·수납·매출·인도까지 차량 판매(Sales) 전 과정의 백엔드와 화면 개발",
         "Sales팀 10명(설계 4 · 개발 6, 현재 기준) — 고객·계약·프로모션·수납·매입/매출/인도·재고·시승·견적(BMW 전용) 모듈 구성",
