@@ -64,6 +64,36 @@
       .join("");
   } else hideSection("skills");
 
+  // ---------- Sales Flow ----------
+  const sf = d.salesFlow;
+  if (sf?.steps?.length) {
+    const pt = sf.purchaseTypes;
+    // 품의 단계 아래 구매유형 비교표 (선택)
+    const ptTable = pt?.rows?.length
+      ? `<div class="sf-table-wrap">
+          <h3 class="sub-title">${esc(pt.title)}</h3>
+          <table class="sf-table">
+            <thead><tr>${pt.head.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead>
+            <tbody>${pt.rows.map((r) => `<tr>${r.map((c) => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody>
+          </table>
+        </div>`
+      : "";
+    $("salesflow-body").innerHTML = `
+      ${sf.intro ? `<p class="sf-intro">${esc(sf.intro)}</p>` : ""}
+      <ol class="sf-steps">
+        ${sf.steps
+          .map(
+            (s) => `
+          <li class="sf-step">
+            <div class="sf-head"><strong>${esc(s.title)}</strong>${s.module ? `<span class="tag">${esc(s.module)}</span>` : ""}</div>
+            <p>${esc(s.desc)}</p>
+          </li>`
+          )
+          .join("")}
+      </ol>
+      ${ptTable}`;
+  } else hideSection("salesflow");
+
   // ---------- Experience ----------
   const bullets = (arr) =>
     arr?.length ? `<ul class="bullets">${arr.map((a) => `<li>${esc(a)}</li>`).join("")}</ul>` : "";

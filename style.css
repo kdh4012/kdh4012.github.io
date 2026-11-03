@@ -110,6 +110,32 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 .skill { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
 .skill h3 { font-size: 14px; margin-bottom: 12px; }
 
+/* ---------- Sales Flow ---------- */
+.sf-intro { font-size: 17px; margin-bottom: 20px; }
+.sf-steps {
+  list-style: none; counter-reset: sf;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px;
+}
+.sf-step {
+  counter-increment: sf; position: relative;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px 16px 16px 52px;
+}
+/* 단계 번호 */
+.sf-step::before {
+  content: counter(sf); position: absolute; left: 14px; top: 14px;
+  width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--accent-soft); color: var(--accent); font-size: 13px; font-weight: 700;
+}
+.sf-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.sf-head strong { font-size: 15px; }
+.sf-step p { font-size: 14px; color: var(--muted); }
+.sf-table-wrap { margin-top: 28px; overflow-x: auto; }
+.sf-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 520px; }
+.sf-table th, .sf-table td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border); }
+.sf-table th { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.sf-table td:first-child { font-weight: 600; white-space: nowrap; }
+
 /* ---------- Timeline ---------- */
 .timeline { list-style: none; border-left: 2px solid var(--border); margin-left: 6px; }
 .tl-item { position: relative; padding: 0 0 36px 28px; }
