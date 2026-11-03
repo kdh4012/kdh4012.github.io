@@ -127,6 +127,9 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
   width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
   background: var(--accent-soft); color: var(--accent); font-size: 13px; font-weight: 700;
 }
+.sf-sub { margin-top: 28px; }
+.sf-step-plain { padding-left: 16px; counter-increment: none; }
+.sf-step-plain::before { content: none; }
 .sf-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
 .sf-head strong { font-size: 15px; }
 .sf-step p { font-size: 14px; color: var(--muted); }

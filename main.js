@@ -78,19 +78,21 @@
           </table>
         </div>`
       : "";
-    $("salesflow-body").innerHTML = `
-      ${sf.intro ? `<p class="sf-intro">${esc(sf.intro)}</p>` : ""}
-      <ol class="sf-steps">
-        ${sf.steps
-          .map(
-            (s) => `
-          <li class="sf-step">
+    // 단계 카드 공통 렌더링 (번호는 CSS counter, related 는 번호 없음)
+    const sfCard = (s, cls) => `
+          <li class="${cls}">
             <div class="sf-head"><strong>${esc(s.title)}</strong>${s.module ? `<span class="tag">${esc(s.module)}</span>` : ""}</div>
             <p>${esc(s.desc)}</p>
-          </li>`
-          )
-          .join("")}
-      </ol>
+          </li>`;
+    const rel = sf.related;
+    const relHtml = rel?.items?.length
+      ? `<h3 class="sub-title sf-sub">${esc(rel.title)}</h3>
+         <ul class="sf-steps sf-related">${rel.items.map((s) => sfCard(s, "sf-step sf-step-plain")).join("")}</ul>`
+      : "";
+    $("salesflow-body").innerHTML = `
+      ${sf.intro ? `<p class="sf-intro">${esc(sf.intro)}</p>` : ""}
+      <ol class="sf-steps">${sf.steps.map((s) => sfCard(s, "sf-step")).join("")}</ol>
+      ${relHtml}
       ${ptTable}`;
   } else hideSection("salesflow");
 
