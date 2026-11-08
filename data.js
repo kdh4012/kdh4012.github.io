@@ -328,7 +328,7 @@ const PORTFOLIO = {
 
   // file: 암호화된 자격증 PDF 경로 (tools/encrypt-certs.mjs 로 생성, 비우면 다운로드 버튼 숨김)
   certificates: [
-    { title: "AWS Certified Solutions Architect – Associate", sub: "Amazon Web Services", period: "2025.01.11 – 2028.01.11" },
+    { title: "AWS Certified Solutions Architect – Associate", sub: "Amazon Web Services", period: "2025.01.11 – 2028.01.11", file: "assets/certificates/aws-saa.pdf.enc" },
     { title: "SQLD", sub: "한국데이터산업진흥원", period: "2021.06.25", file: "assets/certificates/sqld.pdf.enc" },
     { title: "Coding Specialist Professional 1급", sub: "YBM IT", period: "2020.08.23", file: "assets/certificates/cos-pro-java-1.pdf.enc" },
     { title: "한국사능력검정시험 1급", sub: "국사편찬위원회", period: "2018.05.26", file: "assets/certificates/korean-history-1.pdf.enc" },
