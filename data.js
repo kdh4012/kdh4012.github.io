@@ -151,7 +151,7 @@ const PORTFOLIO = {
         {
           title: "WDMS 운영 · BMW/MINI",
           role: "유지보수 및 추가개발",
-          period: "2023.01 – 2023.12",
+          period: "2022.11 – 2023.12",
           // 월별 처리량: BMW+MINI 합산 (브랜드별 상세는 첫 번째 bullet)
           summary: "월 고객 등록 49,000건 · 시승 20,000건 · 계약 11,000건 · 수납 50,000건 · 인도 6,700건 규모의 Sales 업무 운영 (BMW·MINI 합산, 현재 기준)",
           achievements: [
