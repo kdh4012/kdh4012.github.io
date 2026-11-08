@@ -256,7 +256,7 @@ const PORTFOLIO = {
       title: "가상계좌 중복 발급 방지",
       period: "", // TODO: 개발 시기 (BMW / VW 구축 중 언제인지)
       context: "WDMS",
-      role: "설계·개발",
+      role: "개발",
       tags: ["비관적 락", "SELECT FOR UPDATE", "Oracle", "Spring Transaction", "MyBatis"],
       problem:
         "계약 작성 시 딜러·은행별 가상계좌 풀에서 미사용 계좌를 선점하는데, 여러 영업사원이 동시에 발급을 요청하면 같은 계좌가 여러 계약에 중복 할당되어 입금이 다른 계약에 매칭될 위험이 있었습니다.",
@@ -277,7 +277,7 @@ const PORTFOLIO = {
       title: "품의 동시 수정 충돌 방지",
       period: "", // TODO: 개발 시기
       context: "WDMS",
-      role: "설계·개발",
+      role: "개발",
       tags: ["낙관적 락", "Lost Update", "버전 체크", "Oracle", "Spring", "MyBatis"],
       problem:
         "같은 계약의 품의 화면을 여러 사용자(또는 여러 브라우저)가 동시에 띄워 둔 상태에서, 먼저 저장된 변경을 모르는 화면이 이전 값 기준으로 저장해 다른 사용자의 작업을 덮어쓰거나 이미 진행된 단계를 다시 처리하는 갱신 손실(Lost Update) 문제가 있었습니다.",
