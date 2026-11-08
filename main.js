@@ -242,18 +242,33 @@
   }
 
   // 받은 암호문을 비밀번호로 풀어 저장. 실패 시 false
+  // 받은 암호문을 비밀번호로 풀어 저장. 비밀번호 불일치만 false, 그 외 오류는 원인별 메시지로 throw
   async function tryDownload(file, name, password) {
-    const res = await fetch(file);
+    if (!window.crypto?.subtle) throw new Error("unsupported");
+    // 캐시된 예전 파일을 받지 않도록 매번 새로 요청
+    const res = await fetch(file, { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const buf = await res.arrayBuffer();
+    let plain;
     try {
-      saveBlob(await decryptCert(buf, password), name);
-      return true;
+      plain = await decryptCert(buf, password);
     } catch (e) {
-      if (e.message === "format") throw e;
-      return false;
+      // AES-GCM 인증 태그 불일치(OperationError) = 비밀번호 틀림
+      if (e.name === "OperationError") return false;
+      throw e;
     }
+    saveBlob(plain, name);
+    return true;
   }
+
+  // 오류 원인별 안내 문구
+  const certErrorMsg = (e) => {
+    console.error("[cert download]", e);
+    if (e.message === "unsupported") return "이 브라우저에서는 복호화를 지원하지 않습니다. Chrome·Safari 등 기본 브라우저로 열어 주세요.";
+    if (/^HTTP /.test(e.message)) return `파일을 불러오지 못했습니다 (${e.message}). 새로고침 후 다시 시도해 주세요.`;
+    if (e.message === "format") return "파일 형식이 올바르지 않습니다. 새로고침 후 다시 시도해 주세요.";
+    return `다운로드 중 오류가 발생했습니다: ${e.message || e.name}`;
+  };
 
   const dlg = $("cert-dialog"), dlgForm = $("cert-form"), dlgInput = $("cert-password"), dlgMsg = $("cert-msg");
   let pending = null; // 다이얼로그가 열린 대상 { file, name }
@@ -278,15 +293,17 @@
     submitBtn.disabled = true;
     dlgMsg.textContent = "확인 중…";
     try {
-      if (await tryDownload(pending.file, pending.name, dlgInput.value)) {
-        certPassword = dlgInput.value;
+      // 모바일 자동완성 등으로 붙는 앞뒤 공백 제거
+      const pw = dlgInput.value.trim();
+      if (await tryDownload(pending.file, pending.name, pw)) {
+        certPassword = pw;
         dlg.close();
       } else {
-        dlgMsg.textContent = "비밀번호가 올바르지 않습니다.";
+        dlgMsg.textContent = "비밀번호가 올바르지 않습니다. (한/영, Caps Lock 확인)";
         dlgInput.select();
       }
     } catch (e) {
-      dlgMsg.textContent = "파일을 불러오지 못했습니다.";
+      dlgMsg.textContent = certErrorMsg(e);
     } finally {
       submitBtn.disabled = false;
     }
