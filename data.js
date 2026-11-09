@@ -34,7 +34,7 @@ const PORTFOLIO = {
     { category: "Backend", items: ["Spring"] },
     { category: "Frontend", items: ["jQuery", "Kendo UI"] },
     { category: "Database", items: ["Oracle"] },
-    { category: "DevOps", items: ["Git", "Jenkins"] },
+    { category: "Tools", items: ["Git", "IntelliJ"] },
   ],
 
   /**
