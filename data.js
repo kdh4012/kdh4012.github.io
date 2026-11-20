@@ -99,7 +99,7 @@ const PORTFOLIO = {
             "고객 정보 파기: 화면 강제 삭제·OneX 삭제 요청·동의 만료 시 삭제 대상 테이블에 적재 후 고객·판매기회·계약·시승·수납·프로모션·세금계산서 정보 삭제 (진행 중 계약, RO, 연결 차량, 부품판매 이력이 있으면 제외), 첨부파일은 사용 여부 변경 후 배치로 물리 파일 삭제",
             "추가개발: 재판매 의심고객 관리(차대번호 기준 구매 고객 등록 및 단계별 알림), EV 스마트케어(LG에너지솔루션) 동의 및 차량 정보 연동",
             "고객 안내 SMS를 카카오 알림톡으로 전환 (미설치 고객은 SMS 대체 발송)",
-            "운영 대응: 태블릿 본인인증 무응답(다중 Pod), 운영 SQL 오류(ORA-01427) 원인 분석 및 해결, 주소검색 API 장애 시 직접 입력으로 긴급 전환",
+            "운영 대응: 태블릿(WebView) 본인인증 무응답 해결(WebSocket·Redis Pub/Sub), 운영 SQL 오류(ORA-01427) 원인 분석 및 해결, 주소검색 API 장애 시 직접 입력으로 긴급 전환",
             "외부 CRM(OneX) 고객 동기화 I/F: 고객 정보 수정 시 고객명·휴대폰번호가 같은 고객을 함께 갱신, 가망고객 동의 만료일 동기화, I/F 대상 테이블 적재 후 배치 전송 및 OneX 통합고객번호 수신",
             "CI 분리보관 의무에 대비해 현업과 협의, OneX 고객통합 기준을 고객명·휴대폰번호로 정리",
           ],
@@ -179,17 +179,18 @@ const PORTFOLIO = {
       title: "태블릿 본인인증 무응답",
       context: "WDMS 운영 · 폭스바겐/아우디",
       role: "원인 분석 및 개발",
-      tags: ["WebSocket(STOMP)", "Redis Pub/Sub", "다중 Pod"],
+      tags: ["WebView", "WebSocket(STOMP)", "Redis Pub/Sub"],
       problem:
-        "운영 환경의 태블릿에서 본인인증을 마쳐도 응답이 없었습니다. 개발 환경에서는 정상 동작했습니다. 태블릿은 팝업이 불가한 WebView라 웹·모바일과 달리 WebSocket으로 인증 결과를 받는 구조였습니다.",
+        "태블릿에서 본인인증을 마쳐도 화면에 응답이 없었습니다. 웹과 같은 팝업 + JS 콜백 방식으로 인증창을 띄웠는데, 태블릿은 앱의 WebView라 인증창이 원래 화면의 브라우저 컨텍스트를 벗어나 콜백으로 결과를 돌려받지 못했습니다.",
       cause:
-        "개발 환경은 Pod이 1개라 문제가 없었지만, 운영은 Pod이 여러 개라 인증기관의 웹훅을 받은 Pod과 WebSocket 연결을 가진 Pod이 다를 수 있었습니다.",
-      solution: "웹훅을 받은 Pod이 결과를 Redis에 publish하고, 모든 Pod이 이를 받아 자기에게 연결된 단말이면 WebSocket으로 전달하도록 했습니다.",
+        "인증 결과는 resultUrl 요청으로 서버에 도착하지만, 이를 태블릿 화면에 전달할 경로가 없었습니다. 또 운영은 Pod이 여러 개이고 특정 Pod으로 연결을 고정할 수 없어, resultUrl 요청을 받은 Pod과 태블릿이 연결된 Pod이 다를 수 있었습니다.",
+      solution: "태블릿은 WebSocket으로 결과를 받도록 바꾸고, 여러 Pod 사이는 Redis Pub/Sub으로 결과를 전달하도록 구조를 새로 만들었습니다.",
       solutionList: [
-        "WebSocket(STOMP·SockJS) 연결 시 sessionId 기반 topicId를 발급하고, 인증 요청의 결과 URL에 포함",
+        "태블릿이 WebSocket(STOMP·SockJS)에 연결하면 sessionId 기반 topicId를 발급하고, 인증 요청의 resultUrl에 topicId를 포함",
+        "resultUrl 요청을 받은 Pod이 결과를 Redis에 publish하고, 모든 Pod이 구독해 자기에게 연결된 topicId면 WebSocket으로 전달",
         "웹·모바일은 기존 팝업 + JS 콜백 방식 유지",
       ],
-      result: "다중 Pod 환경에서도 인증 결과가 해당 단말로 전달되어 무응답 문제가 해소되었습니다.",
+      result: "태블릿에서도 인증 결과가 해당 단말로 전달되어 무응답 문제가 해소되었고, Pod 수와 관계없이 동작하게 되었습니다.",
       insight: "",
     },
     {
