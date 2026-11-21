@@ -130,40 +130,6 @@
       .join("");
   } else hideSection("experience");
 
-  // ---------- Projects ----------
-  const projRow = (label, v) => (v ? `<div class="pr-row"><dt>${label}</dt><dd>${esc(v)}</dd></div>` : "");
-  const projLinks = (l = {}) =>
-    [
-      l.github && ["GitHub", l.github],
-      l.demo && ["Demo", l.demo],
-      l.post && ["회고", l.post],
-    ]
-      .filter(Boolean)
-      .map(([n, h]) => `<a href="${esc(h)}" target="_blank" rel="noopener">${n} ↗</a>`)
-      .join("");
-
-  if (d.projects?.length) {
-    $("projects-body").innerHTML = d.projects
-      .map(
-        (pr) => `
-      <article class="card">
-        <div class="card-head">
-          <h3>${esc(pr.title)}</h3>
-          <span class="period">${esc(pr.period)}</span>
-        </div>
-        <p class="muted card-meta">${[pr.org, pr.role].filter(Boolean).map(esc).join(" · ")}</p>
-        <dl class="pr">
-          ${projRow("Problem", pr.problem)}
-          ${projRow("Solution", pr.solution)}
-          ${projRow("Result", pr.result)}
-        </dl>
-        <div class="tags">${tags(pr.stack)}</div>
-        <div class="card-links">${projLinks(pr.links)}</div>
-      </article>`
-      )
-      .join("");
-  } else hideSection("projects");
-
   // ---------- Troubleshooting ----------
   // Solution 은 본문 + 선택적 bullet 목록을 함께 표시
   const tsRow = (label, v, list) =>

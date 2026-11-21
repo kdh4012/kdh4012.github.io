@@ -281,20 +281,6 @@ const PORTFOLIO = {
     },
   ],
 
-  projects: [
-    {
-      title: "주식 자동매매 신호 서비스 (개인 프로젝트)",
-      period: "2025.10 – 현재",
-      org: "Side Project",
-      role: "1인 개발",
-      problem: "여러 증권사·거래소 자산을 한 화면에서 보기 어려움",
-      solution: "업비트·한국투자증권 API 연동, RSI·거래량 급증 신호 감지",
-      result: "통합 자산 조회 및 매매 신호 알림",
-      stack: ["Java", "Spring Boot", "Gradle"],
-      links: { github: "https://github.com/kdh4012/stock-service", demo: "", post: "" },
-    },
-  ],
-
   education: [
     { title: "상명대학교 컴퓨터과학과", sub: "학사 졸업", period: "2013.03 – 2020.02" },
   ],
